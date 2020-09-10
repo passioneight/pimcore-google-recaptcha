@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    # Services
+    Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\:
+        resource: '../../Service'
+
+    # Event Subscribers
+    Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\EventSubscriber\:
+        resource: '../../EventSubscriber'
+
+    # Twig Extensions
+    Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Twig\Extension\:
+        resource: '../../Twig/Extension'

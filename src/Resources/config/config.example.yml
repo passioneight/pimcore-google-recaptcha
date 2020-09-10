@@ -1,0 +1,8 @@
+pimcore_google_recaptcha:
+    debug: ~ # boolean, optional; will default to Pimcore::inDebugMode()
+    token_decoder_url: ~ # string, optional; in case the URL changes
+    default_action: ~ # string, optional; defines the default action that is used when creating a token
+    score_threshold: ~ # float, optional; defines the threshold for detecting humans; score >= score_threshold means human
+
+    public_key: ~ # string, required
+    private_key: ~ # string, required

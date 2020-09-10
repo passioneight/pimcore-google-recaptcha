@@ -1,0 +1,17 @@
+{
+  "name": "passioneight/pimcore-google-recaptcha",
+  "type": "pimcore-bundle",
+  "license": "GPL-3.0",
+  "autoload": {
+    "psr-4": {
+      "Passioneight\\Bundle\\PimcorePimcoreGoogleRecaptchaBundle\\": "src/"
+    }
+  },
+  "extra": {
+    "pimcore": {
+      "bundles": [
+        "Passioneight\\Bundle\\PimcorePimcoreGoogleRecaptchaBundle\\PimcorePimcoreGoogleRecaptchaBundle"
+      ]
+    }
+  }
+}
