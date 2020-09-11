@@ -2,7 +2,7 @@
 Once you obtained your keys (see [prerequisites](/documentation/05_prerequsites.md)), add them to the bundle as follows:
 
 ```yaml
-google_recaptcha:
+pimcore_google_recaptcha:
     public_key: '<public-key>'
     private_key: '<private-key>'
 ```
