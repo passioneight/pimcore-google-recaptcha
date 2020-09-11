@@ -4,13 +4,13 @@
   "license": "GPL-3.0",
   "autoload": {
     "psr-4": {
-      "Passioneight\\Bundle\\PimcorePimcoreGoogleRecaptchaBundle\\": "src/"
+      "Passioneight\\Bundle\\PimcoreGoogleRecaptchaBundle\\": "src/"
     }
   },
   "extra": {
     "pimcore": {
       "bundles": [
-        "Passioneight\\Bundle\\PimcorePimcoreGoogleRecaptchaBundle\\PimcorePimcoreGoogleRecaptchaBundle"
+        "Passioneight\\Bundle\\PimcoreGoogleRecaptchaBundle\\PimcoreGoogleRecaptchaBundle"
       ]
     }
   }
