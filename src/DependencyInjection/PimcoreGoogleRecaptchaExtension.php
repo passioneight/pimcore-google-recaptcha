@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class GoogleRecaptchaExtension extends ConfigurableExtension
+class PimcoreGoogleRecaptchaExtension extends ConfigurableExtension
 {
     /**
      * @inheritDoc
