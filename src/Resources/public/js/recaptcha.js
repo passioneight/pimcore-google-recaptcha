@@ -23,24 +23,19 @@ googleRecaptchaScript.addEventListener('load', function() {
                     var submitButtons = form.querySelectorAll('[type="submit"]');
                     submitButtons = submitButtons ? submitButtons : [];
 
-                    var hasRecaptchaTokenMap = {};
-
                     for (var submitButton of submitButtons) {
                         submitButton.addEventListener('click', function(e){
-                            if(!hasRecaptchaTokenMap.submitButtonHash) {
-                                e.preventDefault();
+                            e.preventDefault();
 
-                                grecaptcha.execute(_config.googleRecaptcha.publicKey, {action: action}).then(function (token) {
-                                    if (_config.googleRecaptcha.debug) {
-                                        console.debug("Received response for action:", action, token);
-                                    }
+                            grecaptcha.execute(_config.googleRecaptcha.publicKey, {action: action}).then(function (token) {
+                                if (_config.googleRecaptcha.debug) {
+                                    console.debug("Received response for action:", action, token);
+                                }
 
-                                    element.value = token;
-                                    hasRecaptchaTokenMap.submitButtonHash = true;
+                                element.value = token;
 
-                                    submitButton.click();
-                                });
-                            }
+                                form.dispatchEvent(new Event('submit'));
+                            });
                         });
                     }
                 }
