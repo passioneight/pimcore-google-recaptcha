@@ -8,7 +8,7 @@ googleRecaptchaScript.addEventListener('load', function() {
     grecaptcha.ready(function () {
         var elements = document.querySelectorAll(_config.googleRecaptcha.querySelector);
 
-        if (elements) {
+        if (elements.length > 0) {
             for (var element of elements) {
                 var action = "action" in element.dataset ? element.dataset["action"] : false;
                 action = action ? action : _config.googleRecaptcha.defaultAction;
