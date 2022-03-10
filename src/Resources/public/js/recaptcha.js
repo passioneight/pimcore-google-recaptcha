@@ -34,7 +34,13 @@ googleRecaptchaScript.addEventListener('load', function() {
 
                                 element.value = token;
 
-                                form.dispatchEvent(new Event('submit'));
+                                var doSubmit = form.dispatchEvent(new Event('submit', {
+                                    cancelable: true
+                                }));
+                                
+                                if(doSubmit) {
+                                    form.submit();
+                                }
                             });
                         });
                     }
