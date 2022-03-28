@@ -1,3 +1,5 @@
+if (typeof _config !== 'object' || !_config.googleRecaptcha) return;
+
 var googleRecaptchaScript = document.createElement('script');
 googleRecaptchaScript.src = 'https://www.google.com/recaptcha/api.js?render=' + _config.googleRecaptcha.publicKey;
 googleRecaptchaScript.async = false;
