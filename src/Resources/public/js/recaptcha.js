@@ -17,34 +17,33 @@ googleRecaptchaScript.addEventListener('load', function() {
                     console.debug("Executing Google Recaptcha on action:", action);
                 }
 
-                var form = element.closest("form");
+                var submitButtons = element.closest('form').querySelectorAll('[type="submit"]');
+                submitButtons = submitButtons ? submitButtons : [];
 
-                if(form) {
-                    var submitButtons = form.querySelectorAll('[type="submit"]');
-                    submitButtons = submitButtons ? submitButtons : [];
+                for (var submitButton of submitButtons) {
+                    submitButton.addEventListener('click', function(e){
+                        e.preventDefault();
 
-                    for (var submitButton of submitButtons) {
-                        submitButton.addEventListener('click', function(e){
-                            e.preventDefault();
+                        var form = e.target.closest("form");
 
-                            grecaptcha.execute(_config.googleRecaptcha.publicKey, {action: action}).then(function (token) {
-                                if (_config.googleRecaptcha.debug) {
-                                    console.debug("Received response for action:", action, token);
-                                }
+                        grecaptcha.execute(_config.googleRecaptcha.publicKey, {action: action}).then(function (token) {
+                            if (_config.googleRecaptcha.debug) {
+                                console.debug("Received response for action:", action, token);
+                            }
 
-                                element.value = token;
+                            form.querySelector(_config.googleRecaptcha.querySelector).value = token;
 
-                                var doSubmit = form.dispatchEvent(new Event('submit', {
-                                    cancelable: true
-                                }));
-                                
-                                if(doSubmit) {
-                                    form.submit();
-                                }
-                            });
+                            var doSubmit = form.dispatchEvent(new Event('submit', {
+                                cancelable: true
+                            }));
+
+                            if(doSubmit) {
+                                form.submit();
+                            }
                         });
-                    }
+                    });
                 }
+
             }
         } else if (_config.googleRecaptcha.debug) {
             console.debug("Could not find Google Recaptcha elements for query selector '" + _config.googleRecaptcha.querySelector + "'");
