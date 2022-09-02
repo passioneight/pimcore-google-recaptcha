@@ -28,7 +28,15 @@ class GoogleRecaptchaExtension extends AbstractExtension
         return [
             new TwigFunction("google_recaptcha_public_key", [$this->configuration, "getPublicKey"]),
             new TwigFunction("google_recaptcha_default_action", [$this->configuration, "getDefaultAction"]),
-            new TwigFunction("google_recaptcha_debug", [$this->configuration, "isDebugEnabled"])
+            new TwigFunction("google_recaptcha_debug", [$this, "isDebugEnabled"])
         ];
+    }
+
+    /**
+     * @return int this is needed because a boolean value of false would result in no output for the JS config..
+     */
+    public function isDebugEnabled(): int
+    {
+        return (int)$this->configuration->isDebugEnabled();
     }
 }
