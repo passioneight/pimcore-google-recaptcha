@@ -1,36 +1,22 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\EventSubscriber\Validation;
+namespace Passioneight\PimcoreGoogleRecaptcha\EventSubscriber\Validation;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Event\ValidationEvent;
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Exception\Validation\ValidationException;
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Decoder\TokenDecoderInterface;
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Validator\ResponseValidatorInterface;
+use Passioneight\PimcoreGoogleRecaptcha\Event\ValidationEvent;
+use Passioneight\PimcoreGoogleRecaptcha\Exception\Validation\ValidationException;
+use Passioneight\PimcoreGoogleRecaptcha\Traits\ResponseValidatorTrait;
+use Passioneight\PimcoreGoogleRecaptcha\Traits\TokenDecoderTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ValidationSubscriber implements EventSubscriberInterface
 {
-    /** @var TokenDecoderInterface $decoder */
-    protected $decoder;
-
-    /** @var ResponseValidatorInterface $validator */
-    protected $validator;
-
-    /**
-     * ValidationSubscriber constructor.
-     * @param TokenDecoderInterface $decoder
-     * @param ResponseValidatorInterface $validator
-     */
-    public function __construct(TokenDecoderInterface $decoder, ResponseValidatorInterface $validator)
-    {
-        $this->decoder = $decoder;
-        $this->validator = $validator;
-    }
+    use ResponseValidatorTrait;
+    use TokenDecoderTrait;
 
     /**
      * @inheritDoc
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ValidationEvent::class => "validate"
@@ -41,13 +27,13 @@ class ValidationSubscriber implements EventSubscriberInterface
      * @param ValidationEvent $event
      * @throws ValidationException
      */
-    public function validate(ValidationEvent $event)
+    public function validate(ValidationEvent $event): void
     {
         $token = $event->getToken();
 
-        $response = $this->decoder->decodeToken($token);
+        $response = $this->tokenDecoder->decodeToken($token);
         $event->setResponse($response);
 
-        $this->validator->validate($response);
+        $this->responseValidator->validate($response);
     }
 }

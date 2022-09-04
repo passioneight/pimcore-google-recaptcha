@@ -6,6 +6,7 @@ pimcore_google_recaptcha:
     public_key: '<public-key>'
     private_key: '<private-key>'
 ```
+
 > If you need a different **score-threshold** for your site, you can set the corresponding config.
 > 
 > Have a look at the complete configuration options [here](/src/Resources/config/config.example.yml).

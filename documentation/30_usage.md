@@ -1,66 +1,86 @@
 # Usage
-After configuring the bundle, you'll need some JavaScript in your HTML-Code.
+After [configuring the bundle]((/documentation/20_configuration.md)), the JavaScript needs to become aware of the bundle's
+configuration. Include the following template to achieve this:
 
-> Note that the `recpatcha.js` only supports **V3**.
-
-```html
-<script>
-    var _config = _config || {};
-
-    _config.googleRecaptcha = {
-        debug: {{ google_recaptcha_debug() }},
-        publicKey: "{{ google_recaptcha_public_key() }}",
-        querySelector: ".google-recaptcha",
-        defaultAction: "{{ google_recaptcha_default_action() }}",
-    };
-</script>
-<script src="{{ asset('bundles/googlerecaptcha/js/recaptcha.js') }}"></script>
+```twig
+{% include '@PimcoreGoogleRecaptcha/google-recaptcha.html.twig' %}
 ```
 
-> No need to change the JavaScript, as you can simply change the bundle's configuration to alter the `_config` variable.
+> You can also pass a `nonce` parameter to the template to improve security
+> (see [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) for more information).
 
-Next, add a hidden form field to your form, like so:
-```html
-<input type="hidden" name="google-recaptcha" class="google-recaptcha" />
+### Including the Script
+Import the script in your main script (e.g., `app.js`) and call the `loadScript` method once you have the user's
+consent to load Google reCAPTCHA:
+
+```js
+    let recaptcha = new PassioneightGoogleRecaptcha()
+
+    // Omitted: asking for the user's permission
+    let userConsent = true 
+
+    if(userConsent) {
+        recaptcha.loadScript()
+    }
 ```
 
-> If you want to customize the `action` that is sent to Google, add a `data-action="myCustomAction"` attribute to the form field.
+> You may want to use a custom callback when the `grecaptcha` is ready. You can pass the callback to the `loadScript`
+> method, like so: `recaptcha.loadScript(() => { recaptcha.fetchRecaptchaToken(event) })`.
 
-The script will automatically detect any elements with the `google-recaptcha` class and try to find a parent form.
-If a parent form was found, _any_ corresponding submit buttons (i.e., `<input type="submit" ...>`) will be used to trigger
-Google's `grecaptcha.execute` method before the form is actually submitted.
+The script will automatically detect any form fields with the defined `querySelector` (i.e., `.google-recaptcha` by default) 
+and try to find a parent form. If the user submits the form, the reCAPTCHA-token is loaded first, so it is submitted too.
 
-> The reCAPTCHA is executed on each click, since Google states: _reCAPTCHA tokens expire after two minutes. If you're
-> protecting an action with reCAPTCHA, make sure to call execute when the user takes the action_.
+> To avoid timeouts, the reCAPTCHA is executed **on click**, since Google states: _reCAPTCHA tokens expire after two
+> minutes. If you're protecting an action with reCAPTCHA, make sure to call execute when the user takes the action_.
 
-Once the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) resolves,
-a token will be added to the hidden input field. Afterwards the form will be submitted.
+### Implementing the Form
+While the script is loaded, it won't find any forms to protect just yet. You'll need to add a hidden form field, which
+will be used to submit the token that was loaded from Google.
 
-Finally, you'll need to verify that the user is human. Various, extendable services are provided for this:
-- `TokenDecoderInterface`
-- `ResponseParserInterface`
-- `ResponseValidatorInterface`
-
-Inject both the `TokenDecoderInterface` and `ResponseValidatorInterface` into your class, which handles the form submission
-and add the following code:
+Conveniently, you can add this field as follows:
 ```php
-$recaptchaToken = "theSubmittedToken"; 
-$recaptchaResponse = $this->responseDecoder->decodeToken($recaptchaToken);
-$this->responseValidator->validate($recaptchaResponse); // Throws an exception if invalid
-```
 
-Alternatively, you can trigger a `ValidationEvent` using Symfony's `EventDispatcherInterface`. If the token is invalid,
-a `ValidationException` is thrown.
+namespace App\Form\Authentication;
 
-```php
-try{
-    $this->eventDispacther->dispatch(new ValidationEvent("theSubmittedToken"));
-} catch (ValidationException $e) {
-    // Do some error handling
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Passioneight\PimcoreGoogleRecaptcha\Form\Field\GoogleRecaptchaField;
+
+class RegistrationForm extends AbstractType
+{
+    const FIELD_GOOGLE_RECAPTCHA = "google-recaptcha";
+
+    /**
+     * @inheritDoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        // Omitted: any other fields of the form
+
+        $builder->add(self::FIELD_GOOGLE_RECAPTCHA, GoogleRecaptchaField::class);
+
+        $builder->add('submit', SubmitType::class, [
+            'label_format' => 'form.registration.submit'
+        ]);
+    }
 }
 ```
 
-> You may want to checkout our [Form Builder Bundle](https://github.com/passioneight/form-builder) for an even easier integration.
-> You'll only have to include the JS and add a `GoogleRecaptcha` field to your form.
+> If you want to customize the `action` that is sent to Google, add a `data-action="myCustomAction"` to the `SubmitType`.
+
+Using the `GoogleRecaptchaField`, the token will be validated automatically, because it contains the `GoogleRecaptchaConstraint`.
+
+### Explicit Token Validation
+If you want to validate the token yourself, dispatch a `ValidationEvent`:
+ ```php
+    try{
+        $this->eventDispacther->dispatch(new ValidationEvent($token));
+    } catch (ValidationException $e) {
+        // Do some error handling
+    }
+```
 
 ### [Next Chapter: Extending the bundle](/documentation/40_extending_the_bundle.md)

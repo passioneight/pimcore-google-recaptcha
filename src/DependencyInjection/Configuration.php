@@ -1,9 +1,9 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\DependencyInjection;
+namespace Passioneight\PimcoreGoogleRecaptcha\DependencyInjection;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Constant\Configuration as Config;
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Constant\DefaultConfigurationValue;
+use Passioneight\PimcoreGoogleRecaptcha\Constant\Configuration as Config;
+use Passioneight\PimcoreGoogleRecaptcha\Constant\DefaultConfigurationValue;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -13,7 +13,7 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder(Config::ROOT);
         $rootNode = $treeBuilder->getRootNode();
@@ -25,25 +25,19 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $rootNode
-     */
     private function addGoogleRecaptchaKeyConfiguration(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
                 ->scalarNode(Config::PUBLIC_KEY)
-                    ->defaultNull()
+                    ->isRequired()
                 ->end()
                 ->scalarNode(Config::PRIVATE_KEY)
-                    ->defaultNull()
+                    ->isRequired()
                 ->end()
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $rootNode
-     */
     private function addGoogleRecaptchaValidationConfiguration(ArrayNodeDefinition $rootNode)
     {
         $rootNode
@@ -54,9 +48,6 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $rootNode
-     */
     private function addMiscConfiguration(ArrayNodeDefinition $rootNode)
     {
         $rootNode

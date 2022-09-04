@@ -1,77 +1,41 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Configuration;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Configuration;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Constant\Configuration;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Passioneight\PimcoreGoogleRecaptcha\Constant\Configuration;
+use Passioneight\PimcoreGoogleRecaptcha\Traits\BundleConfigurationAwareTrait;
 
 class GoogleRecaptchaConfiguration
 {
-    /** @var ParameterBagInterface $parameterBag */
-    private $parameterBag;
+    use BundleConfigurationAwareTrait;
 
-    /**
-     * GoogleRecaptchaConfiguration constructor.
-     * @param ParameterBagInterface $parameterBag
-     */
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function getPrivateKey(): string
     {
-        $this->parameterBag = $parameterBag;
+        return $this->getConfiguration()[Configuration::PRIVATE_KEY];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPrivateKey(): ?string
+    public function getPublicKey(): string
     {
-        return $this->getConfig()[Configuration::PRIVATE_KEY];
+        return $this->getConfiguration()[Configuration::PUBLIC_KEY];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPublicKey(): ?string
-    {
-        return $this->getConfig()[Configuration::PUBLIC_KEY];
-    }
-
-    /**
-     * @return string
-     */
     public function getTokenDecoderUrl(): string
     {
-        return $this->getConfig()[Configuration::TOKEN_DECODER_URL];
+        return $this->getConfiguration()[Configuration::TOKEN_DECODER_URL];
     }
 
-    /**
-     * @return bool
-     */
     public function isDebugEnabled(): bool
     {
-        return $this->getConfig()[Configuration::DEBUG];
+        return $this->getConfiguration()[Configuration::DEBUG];
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultAction(): string
     {
-        return $this->getConfig()[Configuration::DEFAULT_ACTION];
+        return $this->getConfiguration()[Configuration::DEFAULT_ACTION];
     }
 
-    /**
-     * @return float
-     */
     public function getScoreThreshold(): float
     {
-        return $this->getConfig()[Configuration::SCORE_THRESHOLD];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getConfig(): array
-    {
-        return $this->parameterBag->get(Configuration::ROOT) ?: [];
+        return $this->getConfiguration()[Configuration::SCORE_THRESHOLD];
     }
 }

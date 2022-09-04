@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Constant;
+namespace Passioneight\PimcoreGoogleRecaptcha\Constant;
 
 class DefaultConfigurationValue
 {

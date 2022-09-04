@@ -4,13 +4,19 @@
   "license": "GPL-3.0",
   "autoload": {
     "psr-4": {
-      "Passioneight\\Bundle\\PimcoreGoogleRecaptchaBundle\\": "src/"
+      "Passioneight\\PimcoreGoogleRecaptcha\\": "src/"
     }
   },
+
+  "require": {
+    "pimcore/pimcore": "^10.5",
+    "passioneight/php-utilities": "^2.0"
+  },
+
   "extra": {
     "pimcore": {
       "bundles": [
-        "Passioneight\\Bundle\\PimcoreGoogleRecaptchaBundle\\PimcoreGoogleRecaptchaBundle"
+        "Passioneight\\PimcoreGoogleRecaptcha\\PimcoreGoogleRecaptchaBundle"
       ]
     }
   }

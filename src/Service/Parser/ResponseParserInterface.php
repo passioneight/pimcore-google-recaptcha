@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Parser;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Parser;
 
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -9,7 +9,7 @@ interface ResponseParserInterface
     /**
      * @param ResponseInterface $response
      */
-    public function parse(ResponseInterface $response);
+    public function parse(ResponseInterface $response): array;
 
     /**
      * @return bool

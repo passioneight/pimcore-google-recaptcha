@@ -1,8 +1,9 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\DependencyInjection;
+namespace Passioneight\PimcoreGoogleRecaptcha\DependencyInjection;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Constant\Configuration as Config;
+use Passioneight\Bundle\PhpUtilitiesBundle\Service\Utility\MethodUtility;
+use Passioneight\PimcoreGoogleRecaptcha\Service\Configuration\GoogleRecaptchaConfiguration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -16,19 +17,15 @@ class PimcoreGoogleRecaptchaExtension extends ConfigurableExtension
      */
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('config.yml');
 
         $this->populateContainer($mergedConfig, $container);
     }
 
-    /**
-     * Populates the container in order to access the configuration later on, if needed.
-     * @param array $config
-     * @param ContainerBuilder $container
-     */
-    private function populateContainer(array $config, ContainerBuilder $container)
+    private function populateContainer(array $config, ContainerBuilder $container): void
     {
-        $container->setParameter(Config::ROOT, $config);
+        $serviceDefinition = $container->getDefinition(GoogleRecaptchaConfiguration::class);
+        $serviceDefinition->addMethodCall(MethodUtility::createSetter("configuration"), [$config]);
     }
 }
