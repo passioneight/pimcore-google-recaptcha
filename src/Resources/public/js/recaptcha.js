@@ -33,7 +33,7 @@ googleRecaptchaScript.addEventListener('load', function() {
 
                             form.querySelector(_config.googleRecaptcha.querySelector).value = token;
 
-                            if (form.checkValidity()) {
+                            if (form.noValidate || form.reportValidity()) {
                                 var doSubmit = form.dispatchEvent(new Event('submit', {
                                     cancelable: true
                                 }));
