@@ -33,17 +33,18 @@ googleRecaptchaScript.addEventListener('load', function() {
 
                             form.querySelector(_config.googleRecaptcha.querySelector).value = token;
 
-                            var doSubmit = form.dispatchEvent(new Event('submit', {
-                                cancelable: true
-                            }));
-
-                            if(doSubmit) {
-                                form.submit();
+                            if (form.noValidate || form.reportValidity()) {
+                                var doSubmit = form.dispatchEvent(new Event('submit', {
+                                    cancelable: true
+                                }));
+    
+                                if (doSubmit) {
+                                    form.submit();
+                                }
                             }
                         });
                     });
                 }
-
             }
         } else if (_config.googleRecaptcha.debug) {
             console.debug("Could not find Google Recaptcha elements for query selector '" + _config.googleRecaptcha.querySelector + "'");
