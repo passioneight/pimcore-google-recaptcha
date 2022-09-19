@@ -78,7 +78,14 @@ export class GoogleRecaptcha {
             }
 
             form.querySelector(this.querySelector).value = token
-            form.submit()
+            
+            let submitForm = form.dispatchEvent(new Event('ongooglerecaptchaloaded', {
+                cancelable: true
+            }));
+
+            if(submitForm) {
+                form.submit();
+            }
         })
     }
 
