@@ -2,8 +2,8 @@
 
 namespace Passioneight\PimcoreGoogleRecaptcha\Service\Configuration;
 
+use Passioneight\Bundle\PimcoreUtilitiesBundle\Traits\BundleConfigurationAwareTrait;
 use Passioneight\PimcoreGoogleRecaptcha\Constant\Configuration;
-use Passioneight\PimcoreGoogleRecaptcha\Traits\BundleConfigurationAwareTrait;
 
 class GoogleRecaptchaConfiguration
 {
