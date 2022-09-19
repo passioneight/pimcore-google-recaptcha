@@ -1,34 +1,20 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Validator;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Validator;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Configuration\GoogleRecaptchaConfiguration;
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Parser\ResponseParserInterface;
+use Passioneight\PimcoreGoogleRecaptcha\Traits\GoogleRecaptchaConfigurationTrait;
+use Passioneight\PimcoreGoogleRecaptcha\Traits\ResponseParserTrait;
 
 abstract class AbstractResponseValidator implements ResponseValidatorInterface
 {
-    /** @var ResponseParserInterface $responseParser */
-    protected $responseParser;
-
-    /** @var float $scoreThreshold */
-    protected $scoreThreshold;
-
-    /**
-     * AbstractResponseValidator constructor.
-     * @param ResponseParserInterface $responseParser
-     * @param GoogleRecaptchaConfiguration $configuration
-     */
-    public function __construct(ResponseParserInterface $responseParser, GoogleRecaptchaConfiguration $configuration)
-    {
-        $this->responseParser = $responseParser;
-        $this->scoreThreshold = $configuration->getScoreThreshold();
-    }
+    use GoogleRecaptchaConfigurationTrait;
+    use ResponseParserTrait;
 
     /**
      * @inheritDoc
      */
     public function isHuman(): bool
     {
-        return $this->scoreThreshold <= $this->responseParser->getScore();
+        return $this->googleRecaptchaConfiguration->getScoreThreshold() <= $this->responseParser->getScore();
     }
 }

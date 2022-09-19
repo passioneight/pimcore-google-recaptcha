@@ -1,10 +1,9 @@
 # Installation
-
-Execute the following commands, and you are ready to go:
+Execute the following commands to install and enable this bundle:
 
 ```
-COMPOSER_MEMORY_LIMIT=-1 composer require passioneight/pimcore-google-recaptcha
-php bin/console pimcore:bundle:enable PimcoreGoogleRecaptchaBundle
+composer require passioneight/pimcore-google-recaptcha
+bin/console pimcore:bundle:enable PimcoreGoogleRecaptchaBundle
 ```
 
 ### [Next Chapter: Configuration](/documentation/20_configuration.md)

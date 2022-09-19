@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Exception\Validation;
+namespace Passioneight\PimcoreGoogleRecaptcha\Exception\Validation;
 
 class ValidationException extends \Exception
 {

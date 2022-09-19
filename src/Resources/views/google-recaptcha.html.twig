@@ -1,0 +1,10 @@
+<script type="text/javascript"{% if nonce|default %} nonce="{{ nonce }}"{% endif %}>
+    var _config = _config || {};
+
+    _config.googleRecaptcha = {
+        debug: {{ google_recaptcha_debug() }},
+        publicKey: "{{ google_recaptcha_public_key() }}",
+        querySelector: ".google-recaptcha",
+        defaultAction: "{{ google_recaptcha_default_action() }}",
+    };
+</script>

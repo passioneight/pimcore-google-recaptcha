@@ -1,8 +1,8 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Validator;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Validator;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Exception\Validation\ValidationException;
+use Passioneight\PimcoreGoogleRecaptcha\Exception\Validation\ValidationException;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 interface ResponseValidatorInterface
@@ -11,7 +11,7 @@ interface ResponseValidatorInterface
      * @param ResponseInterface $response
      * @throws ValidationException if the given response was not valid.
      */
-    public function validate(ResponseInterface $response);
+    public function validate(ResponseInterface $response): void;
 
     /**
      * @return bool

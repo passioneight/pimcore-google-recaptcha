@@ -1,9 +1,11 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Decoder;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Decoder;
 
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class TokenDecoder extends AbstractTokenDecoder
 {
@@ -11,10 +13,11 @@ class TokenDecoder extends AbstractTokenDecoder
      * @inheritDoc
      * @throws TransportExceptionInterface
      */
-    public function decodeToken(string $token)
+    public function decodeToken(string $token): ResponseInterface
     {
         $tokenDecoderUrl = $this->getTokenDecoderUrl();
-        $this->decodedResponse = HttpClient::create()->request('POST', $tokenDecoderUrl, $this->getRequestBody($token));
+        $this->decodedResponse = HttpClient::create()->request(Request::METHOD_POST, $tokenDecoderUrl, $this->getRequestBody($token));
+
         return $this->getDecodedResponse();
     }
 }

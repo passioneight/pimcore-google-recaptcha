@@ -1,23 +1,20 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Parser;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Parser;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Constant\ResponseKey;
+use Passioneight\PimcoreGoogleRecaptcha\Constant\ResponseKey;
 
 abstract class AbstractResponseParser implements ResponseParserInterface, \JsonSerializable
 {
-    /** @var array $responseData */
-    protected $responseData;
-
-    /** @var string $defaultAction */
-    protected $defaultAction;
+    protected array $responseData;
+    protected string $defaultAction;
 
     /**
      * @inheritDoc
      */
     public function isSuccessful(): bool
     {
-        return $this->responseData[ResponseKey::SUCCESS] ?: false;
+        return $this->responseData[ResponseKey::SUCCESS] ?? false;
     }
 
     /**
@@ -25,7 +22,7 @@ abstract class AbstractResponseParser implements ResponseParserInterface, \JsonS
      */
     public function getScore(): float
     {
-        return $this->responseData[ResponseKey::SCORE] ?: 0.0;
+        return $this->responseData[ResponseKey::SCORE] ?? 0.0;
     }
 
     /**
@@ -33,7 +30,7 @@ abstract class AbstractResponseParser implements ResponseParserInterface, \JsonS
      */
     public function getAction(): string
     {
-        return $this->responseData[ResponseKey::ACTION] ?: "";
+        return $this->responseData[ResponseKey::ACTION] ?? "";
     }
 
     /**
@@ -41,7 +38,7 @@ abstract class AbstractResponseParser implements ResponseParserInterface, \JsonS
      */
     public function getErrorCodes(): array
     {
-        return $this->responseData[ResponseKey::ERROR_CODES] ?: [];
+        return $this->responseData[ResponseKey::ERROR_CODES] ?? [];
     }
 
     /**
@@ -49,7 +46,7 @@ abstract class AbstractResponseParser implements ResponseParserInterface, \JsonS
      */
     public function getHostname(): string
     {
-        return $this->responseData[ResponseKey::HOSTNAME] ?: "";
+        return $this->responseData[ResponseKey::HOSTNAME] ?? "";
     }
 
     /**
@@ -57,7 +54,7 @@ abstract class AbstractResponseParser implements ResponseParserInterface, \JsonS
      */
     public function getChallengeTimestamp(): ?string
     {
-        return $this->responseData[ResponseKey::CHALLENGE_TIMESTAMP] ?: null;
+        return $this->responseData[ResponseKey::CHALLENGE_TIMESTAMP] ?? null;
     }
 
     /**
@@ -71,7 +68,7 @@ abstract class AbstractResponseParser implements ResponseParserInterface, \JsonS
     /**
      * @inheritDoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return json_encode($this->responseData);
     }

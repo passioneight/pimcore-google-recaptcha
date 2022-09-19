@@ -1,6 +1,6 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Parser;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Parser;
 
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -19,8 +19,9 @@ class ResponseParser extends AbstractResponseParser
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function parse(ResponseInterface $response)
+    public function parse(ResponseInterface $response): array
     {
         $this->responseData = $response->toArray();
+        return $this->responseData;
     }
 }

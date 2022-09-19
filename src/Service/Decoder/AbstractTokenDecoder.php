@@ -1,56 +1,32 @@
 <?php
 
-namespace Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Decoder;
+namespace Passioneight\PimcoreGoogleRecaptcha\Service\Decoder;
 
-use Passioneight\Bundle\PimcoreGoogleRecaptchaBundle\Service\Configuration\GoogleRecaptchaConfiguration;
+use Passioneight\PimcoreGoogleRecaptcha\Traits\GoogleRecaptchaConfigurationTrait;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class AbstractTokenDecoder implements TokenDecoderInterface
 {
-    /** @var ResponseInterface $decodedResponse */
-    protected $decodedResponse;
+    use GoogleRecaptchaConfigurationTrait;
 
-    /** @var GoogleRecaptchaConfiguration $configuration */
-    protected $configuration;
+    protected ResponseInterface $decodedResponse;
 
-    /**
-     * ResponseDecoder constructor.
-     * @param GoogleRecaptchaConfiguration $configuration
-     */
-    public function __construct(GoogleRecaptchaConfiguration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
-
-    /**
-     * @return ResponseInterface
-     */
     public function getDecodedResponse(): ResponseInterface
     {
         return $this->decodedResponse;
     }
 
-    /**
-     * @return string|null
-     */
     protected function getSecret(): ?string
     {
-        return $this->configuration->getPrivateKey();
+        return $this->googleRecaptchaConfiguration->getPrivateKey();
     }
 
-    /**
-     * @return string
-     */
     protected function getTokenDecoderUrl(): string
     {
-        return $this->configuration->getTokenDecoderUrl();
+        return $this->googleRecaptchaConfiguration->getTokenDecoderUrl();
     }
 
-    /**
-     * @param string $token
-     * @return array
-     */
-    protected function getRequestBody(string $token)
+    protected function getRequestBody(string $token): array
     {
         return [
             'body' => [
