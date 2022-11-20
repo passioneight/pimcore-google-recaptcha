@@ -10,7 +10,7 @@
 
   "require": {
     "pimcore/pimcore": "^10.5",
-    "passioneight/php-utilities": "^2.0"
+    "passioneight/pimcore-utilities": "^2.0"
   },
 
   "extra": {
